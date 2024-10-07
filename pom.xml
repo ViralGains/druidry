@@ -16,15 +16,15 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jackson.databind.version>2.9.10.4</jackson.databind.version>
+        <jackson.databind.version>2.15.4</jackson.databind.version>
         <jackson.datatype.version>2.9.9</jackson.datatype.version>
         <jodatime.version>2.9.7</jodatime.version>
-        <lombok.version>1.18.10</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
         <testng.version>6.11</testng.version>
         <logback.version>1.2.1</logback.version>
         <jsonassert.version>1.4.0</jsonassert.version>
         <commons.version>3.5</commons.version>
-        <jersey.version>2.26</jersey.version>
+        <jersey.version>3.1.6</jersey.version>
         <guava.version>23.0</guava.version>
     </properties>
 
@@ -162,7 +162,7 @@
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <version>3.1.1</version>
                         <configuration>
-                            <source>8</source>
+                            <source>21</source>
                         </configuration>
                         <executions>
                             <execution>
@@ -202,8 +202,8 @@
                 <version>3.3</version>
                 <configuration>
                     <compilerArgument>-Xlint</compilerArgument>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>21</source>
+                    <target>21</target>
                 </configuration>
             </plugin>
 

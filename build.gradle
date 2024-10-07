@@ -1,0 +1,105 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
+    dependencies {
+        classpath "com.gorylenko.gradle-git-properties:gradle-git-properties:2.4.1"
+        classpath 'com.github.jk1:gradle-license-report:2.0'
+    }
+}
+
+apply plugin: 'java-library'
+apply plugin: 'maven-publish' //needed for jenkins to push to artifactory, don't remove
+apply plugin: 'com.github.jk1.dependency-license-report'
+apply plugin: 'jacoco'
+
+group 'com.viralgains.odyssey'  //this was in.zapr.druid, but now we're forking and putting jar in vg artifactory
+version = '3.2-SNAPSHOT' //this was 3.2 originally when we forked
+sourceCompatibility = JavaVersion.VERSION_21
+
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    jacksonDatabindVersion = '2.15.4'
+    jacksonDatatypeVersion = '2.9.9'
+    jodatimeVersion = '2.9.7'
+    lombokVersion = '1.18.30'
+    testngVersion = '6.11'
+    logbackVersion = '1.2.1'
+    jsonassertVersion = '1.4.0'
+    commonsVersion = '3.5'
+    jerseyVersion = '3.1.6'
+    guavaVersion = '23.0'
+}
+
+dependencies {
+    implementation "joda-time:joda-time:${jodatimeVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-joda:${jacksonDatatypeVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    implementation "ch.qos.logback:logback-classic:${logbackVersion}"
+    implementation "ch.qos.logback:logback-core:${logbackVersion}"
+
+    testImplementation "org.testng:testng:${testngVersion}"
+    testImplementation "org.skyscreamer:jsonassert:${jsonassertVersion}"
+    testImplementation "org.projectlombok:lombok:${lombokVersion}"
+    implementation "org.apache.commons:commons-lang3:${commonsVersion}"
+    implementation "org.glassfish.jersey.core:jersey-client:${jerseyVersion}"
+    implementation "org.glassfish.jersey.media:jersey-media-json-jackson:${jerseyVersion}"
+    implementation "org.glassfish.jersey.inject:jersey-hk2:${jerseyVersion}"
+    implementation "org.glassfish.jersey.connectors:jersey-apache-connector:${jerseyVersion}"
+    implementation "com.google.guava:guava:${guavaVersion}"
+}
+
+
+jar {
+    //write the git_commit of the common build into its jar manifest for easy reading later in the app with SomeCommonClass.class.getPackage().getImplementationVersion()
+    manifest {
+        attributes 'Implementation-Version': "${System.env.GIT_COMMIT}" //will be blank on local builds
+    }
+}
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat = 'full'
+        showStandardStreams = false
+    }
+}
+//Functional tests can be enabled when we build environment for real tests
+test {
+    exclude '**/functional/**'
+    maxParallelForks = 2
+}
+
+jacoco {
+    toolVersion = "0.8.11"
+    reportsDirectory = file("$buildDir/reports/jacoco")
+}
+jacocoTestReport {
+    reports {
+        xml.required= false
+        csv.required= false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+    }
+}
+
+licenseReport {
+    //noinspection GrUnresolvedAccess, UnnecessaryQualifiedReference
+    renderers = [new com.github.jk1.license.render.CsvReportRenderer("licenses-${project.name}.csv")] //render dependencies as csv, one dependency per line
+}
