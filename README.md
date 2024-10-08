@@ -1,7 +1,11 @@
 Welcome to project Druidry!
 =======================================
-
 ![build_status](https://api.travis-ci.org/zapr-oss/druidry.svg?branch=master) [![License: Apache License 2](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.txt) [![javadoc](https://javadoc.io/badge2/in.zapr.druid/druidry/javadoc.svg)](https://javadoc.io/doc/in.zapr.druid/druidry)
+
+**This repo has been forked from https://github.com/zapr-oss/druidry. This has been forked because we were upgrading to 
+spring boot3 with java 21 and this client does not have updated libraries to comply with latest spring boot changes.
+In case, in future this gets updated, we can discard the fork and use updated version of the client. Also, this is the recommended
+client by Apache Druid for java applications.**
 
 Druid is an extremely popular tool to perform OLAP queries on event data. Druid drives real-time dashboards in most of the organisations right now. We@Zapr love Druid! Therefore we want to contribute towards making Druid, even more, friendlier to the ever expanding community.
 
@@ -31,7 +35,7 @@ Prerequisite
 -----------
 
 * Maven
-* Java 8
+* Java 21
 
 Usage
 -----
