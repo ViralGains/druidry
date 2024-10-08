@@ -77,6 +77,14 @@ test {
 test {
     exclude '**/functional/**'
     maxParallelForks = 2
+    useTestNG()
+    reports {
+        junitXml.required = true
+        junitXml.outputLocation = layout.buildDirectory.dir("test-results/test")
+        html.outputLocation = layout.buildDirectory.dir("reports/tests")
+        html.required = true
+    }
+
 }
 
 jacoco {
