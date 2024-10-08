@@ -32,6 +32,10 @@
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
+!gradle/wrapper/gradle-wrapper.jar
+
+.gradle
+
 # JIRA plugin
 atlassian-ide-plugin.xml
 
@@ -121,7 +125,6 @@ nbdist/
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
